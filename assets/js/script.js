@@ -1,5 +1,17 @@
 'use strict';
 
+/*
+ * SITE INTERACTIONS — read this file from top to bottom.
+ * 1. Sidebar and testimonial popup
+ * 2. Portfolio filters and contact form validation
+ * 3. Page navigation
+ * 4. Saved theme and English/French/Arabic translations
+ * 5. Project and blog detail popup
+ *
+ * HTML data-* attributes connect elements to this file. The "active" class
+ * controls visibility and selected styles in assets/css/style.css.
+ */
+
 
 
 // element toggle function
@@ -62,6 +74,7 @@ const selectValue = document.querySelector("[data-selecct-value]");
 const filterBtn = document.querySelectorAll("[data-filter-btn]");
 
 for (const button of [...selectItems, ...filterBtn]) {
+  // Save the original English category before translation changes the label.
   button.dataset.filterValue = button.innerText.toLowerCase();
 }
 
@@ -119,7 +132,8 @@ for (let i = 0; i < filterBtn.length; i++) {
 
 
 
-// contact form variables
+// CONTACT FORM: enable the button only when native HTML validation passes.
+// This section validates input; it does not send an email or submit to a server.
 const form = document.querySelector("[data-form]");
 const formInputs = document.querySelectorAll("[data-form-input]");
 const formBtn = document.querySelector("[data-form-btn]");
@@ -140,7 +154,8 @@ for (let i = 0; i < formInputs.length; i++) {
 
 
 
-// page navigation variables
+// PAGE NAVIGATION: match data-page-target on a button to data-page on an article.
+// Keep those identifiers in English; translated button labels do not affect routing.
 const navigationLinks = document.querySelectorAll("[data-nav-link]");
 const pages = document.querySelectorAll("[data-page]");
 
@@ -164,7 +179,8 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
 
 
-// language switcher for the profile, services and resume sections
+// THEME: CSS reads <html data-theme="light"> to replace the default dark colors.
+// localStorage keeps the visitor's choice after a refresh.
 const themeButton = document.querySelector('[data-theme-button]');
 const themeIcon = document.querySelector('[data-theme-icon]');
 
@@ -183,6 +199,8 @@ themeButton.addEventListener('click', () => {
 
 const languageButtons = document.querySelectorAll('[data-language-button]');
 let activeLanguage = 'en';
+// TRANSLATIONS: each selector returns elements in their HTML document order.
+// Each translated array must have matching entries in exactly that same order.
 const translationGroups = {
   nav: document.querySelectorAll('[data-nav-link]'),
   about: document.querySelectorAll('.about .article-title, .about-text p'),
@@ -208,10 +226,12 @@ const translationGroups = {
   contact: document.querySelectorAll('.contact .article-title, .form-title, [data-form-btn]')
 };
 
+// Capture English from the HTML before applying the saved language.
 const englishContent = Object.fromEntries(
   Object.entries(translationGroups).map(([key, elements]) => [key, [...elements].map((element) => element.textContent.trim())])
 );
 
+// Edit French and Arabic text here. Edit the original English text in index.html.
 const translations = {
   fr: {
     nav: ['À propos', 'CV', 'Portfolio', 'Blog', 'Contact'],
@@ -302,6 +322,7 @@ const formFields = document.querySelectorAll('[data-form-input]');
 const englishPlaceholders = [...formFields].map((field) => field.placeholder);
 
 function setLanguage(language) {
+  // Replace visible text and input hints, then update direction and saved choice.
   const content = language === 'en' ? englishContent : translations[language];
   Object.entries(translationGroups).forEach(([group, elements]) => {
     [...elements].forEach((element, index) => { element.textContent = content[group][index]; });
@@ -310,6 +331,7 @@ function setLanguage(language) {
     field.placeholder = language === 'en' ? englishPlaceholders[index] : content.placeholders[index];
   });
   document.documentElement.lang = language;
+  // RTL mirrors Arabic reading order and activates the Arabic layout rules in CSS.
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
   activeLanguage = language;
   languageButtons.forEach((button) => button.classList.toggle('active', button.dataset.languageButton === language));
@@ -329,6 +351,8 @@ const contentModalText = document.querySelector('[data-content-modal-text]');
 const contentModalAction = document.querySelector('[data-content-modal-action]');
 const contentModalCloseButtons = document.querySelectorAll('[data-content-modal-close]');
 
+// Blog articles and source URLs follow the same order as the blog cards in HTML.
+// When adding a card, add its article and source in each language below.
 const modalCopy = {
   en: {
     project: 'This portfolio item highlights a digital project and the creative process behind it. Contact me to discuss the project, its scope or a similar collaboration.',
@@ -399,6 +423,7 @@ const modalCopy = {
 };
 
 function openContentModal(card, type) {
+  // Reuse one popup: projects offer email contact; blog entries link to a source.
   const copy = modalCopy[activeLanguage];
   const articleIndex = [...document.querySelectorAll('.blog-post-item > a')].indexOf(card);
   const title = card.querySelector(type === 'project' ? '.project-title' : '.blog-item-title').textContent.trim();

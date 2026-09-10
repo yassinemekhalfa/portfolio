@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!--
+  FILE GUIDE
+  index.html: profile information and the five page sections.
+  assets/css/style.css: colors, spacing, mobile and desktop layouts.
+  assets/js/script.js: navigation, filters, popups, theme and translations.
+
+  Edit English text here; French and Arabic text lives in script.js.
+  Keep data-* attributes when editing: JavaScript uses them to find elements.
+-->
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,6 +47,7 @@
       - #SIDEBAR
     -->
 
+    <!-- Profile card: contacts expand on mobile and stay visible on desktop. -->
     <aside class="sidebar" data-sidebar>
 
       <div class="sidebar-info">
@@ -164,6 +175,7 @@
         - #NAVBAR
       -->
 
+      <!-- Each data-page-target must match an article's data-page value. -->
       <nav class="navbar">
 
         <ul class="navbar-list">
@@ -190,6 +202,7 @@
 
         </ul>
 
+        <!-- Language and theme choices are saved in the visitor's browser. -->
         <div class="language-selector" aria-label="Language selector">
           <button class="language-btn active" type="button" data-language-button="en">EN</button>
           <button class="language-btn" type="button" data-language-button="fr">FR</button>
@@ -1374,6 +1387,7 @@
 
   </main>
 
+  <!-- Shared project/blog popup. JavaScript fills its content when a card opens. -->
   <div class="content-modal" data-content-modal aria-hidden="true">
     <div class="content-modal-backdrop" data-content-modal-close></div>
     <section class="content-modal-card" role="dialog" aria-modal="true" aria-labelledby="content-modal-title">
