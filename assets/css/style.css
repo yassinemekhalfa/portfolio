@@ -481,6 +481,10 @@ main {
 
 .social-item .social-link:hover { color: var(--light-gray); }
 
+html[data-theme="light"] .social-link img {
+  filter: brightness(0.25);
+}
+
 
 
 
@@ -1926,6 +1930,32 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .navbar-link { font-weight: var(--fw-500); }
 
+  html[lang="fr"] .navbar {
+    max-width: calc(100% - 250px);
+    padding-inline: 12px;
+  }
+
+  html[lang="fr"] .navbar-list {
+    gap: 8px;
+    padding-inline: 0;
+  }
+
+  html[lang="fr"] .article-title {
+    font-size: 24px;
+    max-width: 220px;
+  }
+
+  /* Mirror the desktop navbar for right-to-left pages. */
+  [dir="rtl"] .navbar {
+    right: auto;
+    left: 0;
+    border-radius: 20px 0;
+  }
+
+  [dir="rtl"] .language-selector {
+    padding: 0 12px 0 0;
+  }
+
   /**
    * ABOUT
    */
@@ -2031,18 +2061,29 @@ textarea.form-input::-webkit-resizer { display: none; }
    */
 
   .sidebar {
-    position: sticky;
-    top: 60px;
-    max-height: max-content;
-    height: 100%;
+    position: relative;
+    top: auto;
+    height: auto;
+    align-self: flex-start;
     margin-bottom: 0;
-    padding-top: 60px;
+    padding-top: 30px;
     z-index: 1;
   }
 
-  .sidebar-info { flex-direction: column; }
+  .sidebar,
+  .sidebar.active {
+    max-height: none;
+    overflow: visible;
+  }
 
-  .avatar-box img { width: 150px; }
+  .sidebar-info {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .avatar-box img { width: 120px; }
+
+  .sidebar .separator { margin: 20px 0; }
 
   .info-content .name {
     white-space: nowrap;
@@ -2061,14 +2102,19 @@ textarea.form-input::-webkit-resizer { display: none; }
   .contacts-list { grid-template-columns: 1fr; }
 
   .contact-info :is(.contact-link) {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .contact-info :is(.contact-link, time, address) {
     --fs-7: 14px;
     font-weight: var(--fw-300);
+  }
+
+  .contact-info .contact-link[href^="mailto:"] {
+    font-size: 11px;
+    white-space: nowrap;
+    overflow-wrap: normal;
   }
 
   .separator:last-of-type {
